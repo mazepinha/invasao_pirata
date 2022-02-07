@@ -6,7 +6,7 @@ const Constraint = Matter.Constraint;
 var engine, world, backgroundImg;
 
 var canvas, angle, tower, ground, cannon, cannonBall;
-var balls=[];
+var balls=[], boat;
 //matriz vázia para adicionar elementos
 
 function preload() {
@@ -35,6 +35,8 @@ function setup() {
   tower = Bodies.rectangle(160, 350, 160, 310, options);
   World.add(world, tower);
 
+  boat=new Boat(width,height-60,170,170,-60);
+
   angleMode(DEGREES);
   angle=20
   cannon=new Cannon(180,110,130,100,angle);
@@ -58,6 +60,7 @@ function draw() {
   pop(); 
   
   cannon.display(); 
+  boat.display();
 
   //loop para acessar a matriz dos tiros
   for(var i=0; i<balls.length;i++){
@@ -67,7 +70,7 @@ function draw() {
 
 
 
-function showBalls(Ball,i){
+function showBalls(Ball){
   if (Ball){
     Ball.display
   };
