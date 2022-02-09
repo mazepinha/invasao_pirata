@@ -28,4 +28,11 @@ class CannonBall{
         image(this.image, pos.x, pos.y, this.r, this.r);
         pop();
     };
+    remove(index){
+      Matter.Body.setVelocity(this.body,{x:0,y:0});
+      setTimeout(() =>{
+          Matter.World.remove(world,this.body);
+          delete balls[index];
+      },1000);
+    };
 };

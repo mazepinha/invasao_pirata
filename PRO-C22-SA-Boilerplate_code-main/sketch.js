@@ -9,7 +9,12 @@ var canvas, angle, tower, ground, cannon, cannonBall;
 var balls=[], boat, Boats=[];
 //matriz vázia para adicionar elementos
 
+var boatAnimation=[]
+var boatSpritedata,boatSpritesheet
+
 function preload() {
+  boatSpritedata = loadJSON("./assets/boat/boat.json");
+  boatSpritesheet = loadImage("./assets/boat/boat.png");
   backgroundImg = loadImage("./assets/background.gif");
   towerImage = loadImage("./assets/tower.png");
 }
@@ -35,6 +40,14 @@ function setup() {
   tower = Bodies.rectangle(160, 350, 160, 310, options);
   World.add(world, tower);
 
+  //loot para os frames.
+  var boatFrames=boatSpritedata.frames;
+  for (var i=0;i,boatFrames.length;i++){
+    var pos=boatFrames[i].position;
+    var img=boatSpritesheet.get(pos.x,pox.y,pos.w,pos.h);
+    boatAnimation.push(img);
+  }
+
 
   angleMode(DEGREES);
   angle=20
@@ -48,7 +61,7 @@ function draw() {
   Engine.update(engine);
 
   //desenhando os objetos
-  rect(ground.position.x, ground.position.y, width * 2, 1);
+  rect(ground.position.x, ground.position.y, width *2, 1);
 
   push();
   //definindo o centro da imagem como origem
@@ -62,21 +75,22 @@ function draw() {
   //loop para acessar a matriz dos tiros
   for(var i=0; i<balls.length;i++){
     showBalls(balls[i],i);
+    collisionBoat(i);
   };
 };
 
 function keyPressed(){
   if (keyCode==DOWN_ARROW){
-    cannonBall=new CannonBall(cannon.x,cannon.y)
-    cannonBall.trajectory=[]
-    Matter.Body.setAngle(cannonBall.body,cannon.angle)
-    balls.push(cannonBall)
+    cannonBall=new CannonBall(cannon.x,cannon.y);
+    cannonBall.trajectory=[];
+    Matter.Body.setAngle(cannonBall.body,cannon.angle);
+    balls.push(cannonBall);
   };
 };
 
 function showBalls(Ball, index){
   if (Ball){
-    Ball.display
+    Ball.display();
   };
 };
 
@@ -92,18 +106,33 @@ if (Boats.length>0){
   if (Boats[Boats.length-1]== undefined || Boats[Boats.length-1].body.position.x< width- 300){
   var positions=[-40,-60,-70,-20];
   var position=random(positions);
-  boat=new Boat(width,height-60,170,170,position);
+  boat=new Boat(width,height-60,170,170,position,boatAnimation);
   Boats.push(boat);
 };
     for (var i=0; i<Boats.length;i++){
       if (Boats[i]){
         Matter.Body.setVelocity(Boats[i].body,{x:-2,y:0});
         Boats[i].display();
+        Boats[i].animate();
       };
     };
 }else {
   boat=new Boat(width,height-60,170,170,-60);
   Boats.push(boat);
 };
-
 };
+
+function collisionBoat(index){
+  for (var i=0;i<Boats.length;i++){
+    if (balls[index]!==undefined && Boats[i]!==undefined){
+      var collision=Matter.SAT.collides(balls[index].body,Boats[i].body)
+      if (collision.collided){
+        Boats[i].remove(i);
+
+        Matter.World.remove(world,balls[index].body);
+        delete balls[index];
+      };
+    };
+  };
+};
+
