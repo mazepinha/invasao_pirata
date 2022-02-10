@@ -7,12 +7,18 @@ var engine, world, backgroundImg;
 
 var canvas, angle, tower, ground, cannon, cannonBall;
 var balls=[], boat, Boats=[];
+
 //matriz vázia para adicionar elementos
 
-var boatAnimation=[]
-var boatSpritedata,boatSpritesheet
+var boatAnimation=[];
+var boatSpritedata,boatSpritesheet;
+
+var brokenAnimation=[];
+var brokenSpritedata,brokenSpritesheet;
 
 function preload() {
+  brokenSpritedata = loadJSON("./assets/boat/broken_boat.json");
+  brokenSpritesheet = loadJSON("./assets/boat/broken_boat.png");
   boatSpritedata = loadJSON("./assets/boat/boat.json");
   boatSpritesheet = loadImage("./assets/boat/boat.png");
   backgroundImg = loadImage("./assets/background.gif");
@@ -46,6 +52,13 @@ function setup() {
     var pos=boatFrames[i].position;
     var img=boatSpritesheet.get(pos.x,pos.y,pos.w,pos.h);
     boatAnimation.push(img);
+  }
+
+  var brokenFrames=brokenSpritedata.frames;
+  for (var i=0;i<brokenFrames.length;i++){
+    var pos=brokenFrames[i].position;
+    var img=brokenSpritesheet.get(pos.x,pos.y,pos.w,pos.h);
+    brokenAnimation.push(img);
   }
 
 
