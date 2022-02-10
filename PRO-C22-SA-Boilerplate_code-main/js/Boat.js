@@ -10,7 +10,7 @@ class Boat{
         World.add(world,this.body);
     };
       animate(){
-          this.speed+=0.5;
+          this.speed+=0.1;
       };
     display(){
         var pos=this.body.position;
@@ -21,10 +21,15 @@ class Boat{
         translate(pos.x,pos.y);
         rotate(angle);
         imageMode(CENTER);
-        image(this.Animation,0,this.boatPosition,this.width,this.height);
+        image(this.Animation[index],0,this.boatPosition,this.width,this.height);
         pop();
     };
   remove(index){
+      this.Animation=brokenAnimation;
+      this.speed=0.05;
+      this.width=300;
+      this.height=300;
+      this.isBroken=true;
       setTimeout(() =>{
           Matter.World.remove(world,Boats[index].body);
           delete Boats[index];
