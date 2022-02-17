@@ -7,6 +7,7 @@ class Boat{
         this.height=height;
         this.image=loadImage("./assets/boat.png");
         this.boatPosition=boatPos;
+        this.isBroken=false;
         World.add(world,this.body);
     };
       animate(){
