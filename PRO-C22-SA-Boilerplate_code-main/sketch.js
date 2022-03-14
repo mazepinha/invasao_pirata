@@ -15,10 +15,14 @@ var boatSpritedata,boatSpritesheet;
 
 var brokenAnimation=[];
 var brokenSpritedata,brokenSpritesheet;
+var backgroundSound,pirataLaughSound,cannonExplosionSound;
 
 function preload() {
+  backgroundSound = loadSound("./assets/background_music.mp3");
+  pirataLaughSound = loadSound("./assets/pirate_laugh.mp3");
+  cannonExplosionSound = loadSound("./assets/cannon_explosion.mp3");
   brokenSpritedata = loadJSON("./assets/boat/broken_boat.json");
-  brokenSpritesheet = loadJSON("./assets/boat/broken_boat.png");
+  brokenSpritesheet = loadImage("./assets/boat/broken_boat.png");
   boatSpritedata = loadJSON("./assets/boat/boat.json");
   boatSpritesheet = loadImage("./assets/boat/boat.png");
   backgroundImg = loadImage("./assets/background.gif");
@@ -130,7 +134,7 @@ if (Boats.length>0){
       };
     };
 }else {
-  boat=new Boat(width,height-60,170,170,-60);
+  boat=new Boat(width,height-60,170,170,-60,boatAnimation);
   Boats.push(boat);
 };
 };
